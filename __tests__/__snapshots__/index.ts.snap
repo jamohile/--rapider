@@ -1,0 +1,332 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Help Shows a basic help menu if requested. 1`] = `
+Array [
+  "[1m[32m[HELP] [39m[22mCommand: Lorem ipsum delorum.",
+]
+`;
+
+exports[`Help Shows named flags in help. 1`] = `
+Array [
+  "[1m[32m[HELP] [39m[22mCommand: Lorem ipsum delorum.",
+  "",
+  "[1m[34mnamed arguments:[39m[22m",
+  "[1m|   Arg |   Type | Alias | Description |[22m",
+  "| --foo | STRING |       |             |",
+  "| --bar |  FLOAT |    -b |       hello |",
+  "",
+  "[1m[34minherited named arguments:[39m[22m",
+  "[1m|    Arg |     Type | Alias |                Description |[22m",
+  "| --help | PRESENCE |       | See help for this command. |",
+]
+`;
+
+exports[`Help Shows positional flags in help. 1`] = `
+Array [
+  "[1m[32m[HELP] [39m[22mCommand: Lorem ipsum delorum.",
+  "",
+  "[1m[34mpositional arguments:[39m[22m",
+  "[1m| # | Arg |   Type | Description |[22m",
+  "| 1 | foo | STRING |             |",
+  "| 2 | bar |  FLOAT |       hello |",
+  "",
+  "[1m[34minherited named arguments:[39m[22m",
+  "[1m|    Arg |     Type | Alias |                Description |[22m",
+  "| --help | PRESENCE |       | See help for this command. |",
+]
+`;
+
+exports[`Help Shows subcommands in scope help. 1`] = `
+Array [
+  "[1m[32m[HELP] [39m[22mCommand: Lorem ipsum delorum.",
+  "",
+  "[1m[34msubcommands: [39m[22m",
+  "[1m| Command |    Description |[22m",
+  "|     foo | NO DESCRIPTION |",
+  "|     bar | NO DESCRIPTION |",
+]
+`;
+
+exports[`UI Data displays list 1`] = `
+Array [
+  "[1m| Animals |[22m",
+  "|     Pig |",
+  "|     Cow |",
+  "|   Sheep |",
+]
+`;
+
+exports[`UI Data displays table 1`] = `
+Array [
+  "[1m| ID | Animal |[22m",
+  "|  1 |    Pig |",
+  "|  2 |    Cow |",
+  "|  3 |  Sheep |",
+]
+`;
+
+exports[`UI Logging Indenting Allows indent reset. 1`] = `
+Array [
+  "test",
+]
+`;
+
+exports[`UI Logging Indenting Allows indenting. 1`] = `
+Array [
+  "  test",
+]
+`;
+
+exports[`UI Logging Indenting Allows un-indenting. 1`] = `
+Array [
+  "test",
+]
+`;
+
+exports[`UI Logging Progress Allows updating progress bar with items. 1`] = `
+Array [
+  "[32m|------------------------------|[39m 0%",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "[32m|===============---------------|[39m 50%",
+  "... foo",
+  "... bar",
+]
+`;
+
+exports[`UI Logging Progress Allows updating progress bar with less items. 1`] = `
+Array [
+  "[32m|------------------------------|[39m 0%",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "[32m|===============---------------|[39m 50%",
+  "... foo",
+  "... bar",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "... foo",
+  "... bar",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "... bar",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "[32m|===============---------------|[39m 50%",
+  "... foo",
+]
+`;
+
+exports[`UI Logging Progress Allows updating progress bar with more items. 1`] = `
+Array [
+  "[32m|------------------------------|[39m 0%",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "[32m|===============---------------|[39m 50%",
+  "... foo",
+  "... bar",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "... foo",
+  "... bar",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "... bar",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "[32m|===============---------------|[39m 50%",
+  "... foo",
+  "... bar",
+  "... yo",
+]
+`;
+
+exports[`UI Logging Progress Allows updating progress bar. 1`] = `
+Array [
+  "[32m|------------------------------|[39m 0%",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "[32m|===============---------------|[39m 50%",
+]
+`;
+
+exports[`UI Logging Progress Handles >1 progress. 1`] = `
+Array [
+  "[32m|==============================|[39m 105%",
+]
+`;
+
+exports[`UI Logging Progress Handles negative progress. 1`] = `
+Array [
+  "[32m|------------------------------|[39m -5%",
+]
+`;
+
+exports[`UI Logging Progress Shows progress bar with custom initial. 1`] = `
+Array [
+  "[32m|===============---------------|[39m 50%",
+]
+`;
+
+exports[`UI Logging Progress Shows progress bar with initial 0. 1`] = `
+Array [
+  "[32m|------------------------------|[39m 0%",
+]
+`;
+
+exports[`UI Logging Shows various logs. 1`] = `
+Array [
+  "a",
+]
+`;
+
+exports[`UI Logging Smart Logs Can clear log. 1`] = `
+Array [
+  "hello",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+]
+`;
+
+exports[`UI Logging Smart Logs Can clear logs further back in history. 1`] = `
+Array [
+  "hello1",
+  "hello2",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+]
+`;
+
+exports[`UI Logging Smart Logs Can delete further back log. 1`] = `
+Array [
+  "hello1",
+  "hello2",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "hello2",
+]
+`;
+
+exports[`UI Logging Smart Logs Can delete latest log. 1`] = `
+Array [
+  "hello",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+]
+`;
+
+exports[`UI Logging Smart Logs Can refresh further back log. 1`] = `
+Array [
+  "hello1",
+  "hello2",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "hello3",
+  "hello2",
+]
+`;
+
+exports[`UI Logging Smart Logs Can refresh latest log. 1`] = `
+Array [
+  "hello",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "hello2",
+]
+`;
+
+exports[`UI Logging Spinner Changes over time 1`] = `
+Array [
+  "Loading  ==--- ",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "Loading  -==-- ",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "Loading  --==- ",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "Loading  ---== ",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "Loading  =---= ",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "Loading  ==--- ",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "Loading  -==-- ",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "Loading  --==- ",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "Loading  ---== ",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+  "Loading  =---= ",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+]
+`;
+
+exports[`UI Logging Spinner Supports labels 1`] = `
+Array [
+  "Loading  ==--- ",
+  "[2A",
+  "                                                                                  ",
+  "[2A",
+]
+`;
