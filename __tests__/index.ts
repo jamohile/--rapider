@@ -1484,6 +1484,19 @@ describe("Store", () => {
     ).toEqual(data);
   });
 
+  it("can add data with a UUID.", async () => {
+    const insertedData = { a: 1, b: [2, 3] };
+
+    const store = await rapider.store.register("foo");
+    await store.add("container", insertedData);
+
+    const container = await store.get("container");
+    // @ts-ignore
+    expect(Object.values(container)).toHaveLength(1);
+    // @ts-ignore
+    expect(Object.values(container)).toEqual([insertedData]);
+  });
+
   it("can read nested data from a store.", async () => {
     const store = await rapider.store.register("foo");
     await store.set("parent", {

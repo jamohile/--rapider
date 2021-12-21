@@ -2,6 +2,7 @@ import os from "os";
 import path from "path";
 import fs from "fs";
 import util from "util";
+import { v4 as uuidv4 } from "uuid";
 
 const pathExists = util.promisify(fs.exists);
 
@@ -78,6 +79,9 @@ export async function register(name: string) {
           }
         });
       }
+    },
+    add: async <T>(container: string, data: T) => {
+      return store.set(`${container}.${uuidv4()}`, data);
     },
     update: async (
       field: string,
