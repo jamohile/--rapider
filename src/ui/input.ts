@@ -114,5 +114,3 @@ function getItemText(item: ListItem, selected: boolean, cursor: boolean) {
 //   ],
 //   multiple: true
 // });
-
-prompt({ label: "Hello", type: flags.types.date() }).then(console.log);
