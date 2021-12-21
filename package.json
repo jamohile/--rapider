@@ -8,8 +8,8 @@
     "build": "tsc",
     "prepublish": "npm run build"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Jay Mohile",
+  "license": "MIT",
   "devDependencies": {
     "@types/jest": "^27.0.1",
     "@types/uuid": "^8.3.3",
@@ -21,5 +21,5 @@
     "chalk": "^4.1.2",
     "uuid": "^8.3.2"
   },
-  "description": ""
+  "description": "A tool to quickly create beautiful CLIs."
 }
