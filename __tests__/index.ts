@@ -1439,26 +1439,34 @@ describe("Store", () => {
   });
 
   it("can register new stores", async () => {
-    const store = await rapider.store.register("foo");
+    const store = rapider.store.create("foo");
+    await store.register();
 
-    expect(store.path).toEqual(path.join(os.homedir(), ".rapider", "foo"));
-    expect(store.dataPath).toEqual(path.join(store.path, "data.json"));
-    expect(fs.existsSync(store.dataPath));
+    expect(store.getPath()).toEqual(path.join(os.homedir(), ".rapider", "foo"));
+    expect(store.getDataPath()).toEqual(
+      path.join(store.getPath(), "data.json")
+    );
+    expect(fs.existsSync(store.getDataPath()));
   });
 
   it("can register store, even if files exist.", async () => {
-    const store = await rapider.store.register("foo");
-    const store2 = await rapider.store.register("foo");
+    const store = rapider.store.create("foo");
+    await store.register();
+    const store2 = rapider.store.create("foo");
+    await store2.register();
   });
 
   it("can register store, even if files exist.", async () => {
-    const store = await rapider.store.register("foo");
-    const store2 = await rapider.store.register("foo");
+    const store = rapider.store.create("foo");
+    await store.register();
+    const store2 = rapider.store.create("foo");
+    await store2.register();
   });
 
   it("can read data from a store.", async () => {
     const data = { field: { a: 1, b: [2, 3] } };
-    const store = await rapider.store.register("foo");
+    const store = rapider.store.create("foo");
+    await store.register();
     fs.writeFileSync(
       path.join(rapiderDir, "foo/data.json"),
       JSON.stringify(data)
@@ -1467,14 +1475,16 @@ describe("Store", () => {
   });
 
   it("can read default values from store.", async () => {
-    const store = await rapider.store.register("foo");
+    const store = rapider.store.create("foo");
+    await store.register();
     expect(await store.get("field", { bar: 1 })).toEqual({ bar: 1 });
   });
 
   it("can add data to a store.", async () => {
     const data = { field: { a: 1, b: [2, 3] } };
 
-    const store = await rapider.store.register("foo");
+    const store = rapider.store.create("foo");
+    await store.register();
     await store.set("field", data.field);
 
     expect(
@@ -1487,7 +1497,8 @@ describe("Store", () => {
   it("can add data with a UUID.", async () => {
     const insertedData = { a: 1, b: [2, 3] };
 
-    const store = await rapider.store.register("foo");
+    const store = rapider.store.create("foo");
+    await store.register();
     await store.add("container", insertedData, { key: "uuid" });
 
     const container = await store.get("container");
@@ -1500,7 +1511,8 @@ describe("Store", () => {
     const insertedData1 = { a: 1, b: [2, 3] };
     const insertedData2 = { a: 2, b: [2, 3] };
 
-    const store = await rapider.store.register("foo");
+    const store = rapider.store.create("foo");
+    await store.register();
     await store.add("container", insertedData1);
     await store.add("container", insertedData2);
 
@@ -1516,7 +1528,8 @@ describe("Store", () => {
     const insertedData1 = { a: 1, b: [2, 3] };
     const insertedData2 = { a: 2, b: [2, 3] };
 
-    const store = await rapider.store.register("foo");
+    const store = rapider.store.create("foo");
+    await store.register();
     await store.add("container", insertedData1);
     await store.add("container", insertedData2);
 
@@ -1532,7 +1545,8 @@ describe("Store", () => {
   });
 
   it("can read nested data from a store.", async () => {
-    const store = await rapider.store.register("foo");
+    const store = rapider.store.create("foo");
+    await store.register();
     await store.set("parent", {
       child1: {
         child2: {
@@ -1544,7 +1558,8 @@ describe("Store", () => {
   });
 
   it("can set nested data to a store.", async () => {
-    const store = await rapider.store.register("foo");
+    const store = rapider.store.create("foo");
+    await store.register();
     await store.set("parent.child1.child2.foo", "bar");
     expect(await store.get("parent")).toEqual({
       child1: {
@@ -1556,7 +1571,8 @@ describe("Store", () => {
   });
 
   it("can delete nested data from a store.", async () => {
-    const store = await rapider.store.register("foo");
+    const store = rapider.store.create("foo");
+    await store.register();
     await store.set("parent.child1.child2.foo", "bar");
 
     const deletedData = await store.delete("parent.child1.child2.foo");
@@ -1569,7 +1585,8 @@ describe("Store", () => {
   });
 
   it("can handle deleting non-existent data.", async () => {
-    const store = await rapider.store.register("foo");
+    const store = rapider.store.create("foo");
+    await store.register();
 
     const deletedData = await store.delete("parent.child1.child2.foo");
 
@@ -1583,7 +1600,8 @@ describe("Store", () => {
   });
 
   it("can append array data to a store.", async () => {
-    const store = await rapider.store.register("foo");
+    const store = rapider.store.create("foo");
+    await store.register();
     await store.set("parent.child", [0, 1, 2]);
     await store.append("parent.child", [3]);
     expect(await store.get("parent")).toEqual({
@@ -1592,7 +1610,8 @@ describe("Store", () => {
   });
 
   it("can update specific element from list.", async () => {
-    const store = await rapider.store.register("foo");
+    const store = rapider.store.create("foo");
+    await store.register();
     await store.set("elements", [
       { id: 1, name: "Foo" },
       { id: 2, name: "Bar" },
@@ -1609,7 +1628,8 @@ describe("Store", () => {
   });
 
   it("can delete specific element from list.", async () => {
-    const store = await rapider.store.register("foo");
+    const store = rapider.store.create("foo");
+    await store.register();
     await store.set("elements", [
       { id: 1, name: "Foo" },
       { id: 2, name: "Bar" },
@@ -1619,7 +1639,8 @@ describe("Store", () => {
   });
 
   it("can add new array data to a store.", async () => {
-    const store = await rapider.store.register("foo");
+    const store = rapider.store.create("foo");
+    await store.register();
     await store.append("parent.child", [0, 1, 2, 3]);
     expect(await store.get("parent")).toEqual({
       child: [0, 1, 2, 3],
@@ -1627,7 +1648,8 @@ describe("Store", () => {
   });
 
   it("can overwrite non-array data in a store..", async () => {
-    const store = await rapider.store.register("foo");
+    const store = rapider.store.create("foo");
+    await store.register();
     await store.set("parent.child", "overwrite");
     await store.append("parent.child", [0, 1, 2, 3]);
     expect(await store.get("parent")).toEqual({
@@ -1636,7 +1658,8 @@ describe("Store", () => {
   });
 
   it("can set nested data to a store, without interfering with existing data.", async () => {
-    const store = await rapider.store.register("foo");
+    const store = rapider.store.create("foo");
+    await store.register();
     await store.set("parent.child1.hello", "world");
     await store.set("parent.child1.child2.foo", "bar");
     expect(await store.get("parent")).toEqual({
@@ -1650,7 +1673,8 @@ describe("Store", () => {
   });
 
   it("can set nested data, overwriting parents if non-object type..", async () => {
-    const store = await rapider.store.register("foo");
+    const store = rapider.store.create("foo");
+    await store.register();
     await store.set("parent.child", "overwritten");
     await store.set("parent.child.foo", "bar");
     expect(await store.get("parent")).toEqual({
@@ -1659,11 +1683,12 @@ describe("Store", () => {
   });
 
   it("update data from a source.", async () => {
-    const store = await rapider.store.register("foo");
+    const store = rapider.store.create("foo");
+    await store.register();
     await store.set("parent", {
       counter: 1,
     });
-    await store.update("parent.counter", (val) => val + 1);
+    await store.update<number>("parent.counter", (val) => (val || 0) + 1);
     expect(await store.get("parent.counter")).toEqual(2);
   });
 });
