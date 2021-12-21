@@ -1,2 +1,10 @@
 node_modules
 coverage
+
+# Ignore all build artifacts.
+*.js
+*.d.ts
+dist
+
+# Jest.config.js is the only js file we track.
+!jest.config.js
