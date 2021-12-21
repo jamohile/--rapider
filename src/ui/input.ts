@@ -1,10 +1,33 @@
 // Enable interactive input.
 import chalk from "chalk";
 import readline from "readline";
-import { ui } from "..";
+import { flags, ui } from "..";
+import { IFlagType } from "../flags/types";
 import { LOG } from "./logs";
 import { clearNLines } from "./utils";
 readline.emitKeypressEvents(process.stdin);
+
+interface IPromptInput {
+  label: string;
+  type: IFlagType<any>;
+}
+
+export function prompt(
+  args: IPromptInput = { label: "", type: flags.types.string() }
+): Promise<string> {
+  return new Promise((resolve, reject) => {
+    let input = "";
+
+    process.stdout.write(`${args.label}: `);
+    const stream = process.stdin.on("data", (buffer) => {
+      stream.destroy();
+      // Remove trailing newline.
+      const input = buffer.slice(0, -1).toString();
+      resolve(args.type.parse(input.split(" ")));
+      resolve(input);
+    });
+  });
+}
 
 type ListItem = { value: any; display: string };
 
@@ -82,7 +105,7 @@ function getItemText(item: ListItem, selected: boolean, cursor: boolean) {
 }
 
 // Test List
-// 
+//
 // list({
 //   items: [
 //     { value: "a", display: "Apple" },
@@ -91,3 +114,5 @@ function getItemText(item: ListItem, selected: boolean, cursor: boolean) {
 //   ],
 //   multiple: true
 // });
+
+prompt({ label: "Hello", type: flags.types.date() }).then(console.log);
