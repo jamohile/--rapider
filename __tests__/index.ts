@@ -1555,6 +1555,33 @@ describe("Store", () => {
     });
   });
 
+  it("can delete nested data from a store.", async () => {
+    const store = await rapider.store.register("foo");
+    await store.set("parent.child1.child2.foo", "bar");
+
+    const deletedData = await store.delete("parent.child1.child2.foo");
+    expect(await store.get("parent")).toEqual({
+      child1: {
+        child2: {},
+      },
+    });
+    expect(deletedData).toEqual("bar");
+  });
+
+  it("can handle deleting non-existent data.", async () => {
+    const store = await rapider.store.register("foo");
+
+    const deletedData = await store.delete("parent.child1.child2.foo");
+
+    expect(await store.get("parent")).toEqual({
+      child1: {
+        child2: {},
+      },
+    });
+
+    expect(deletedData).toBeUndefined();
+  });
+
   it("can append array data to a store.", async () => {
     const store = await rapider.store.register("foo");
     await store.set("parent.child", [0, 1, 2]);

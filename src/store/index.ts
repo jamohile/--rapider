@@ -124,6 +124,21 @@ export async function register(name: string) {
         }
       });
     },
+    delete: async <T>(field: string): Promise<T> => {
+      const fieldParts = field.split(".");
+      const parentField = fieldParts.slice(0, -1).join(".");
+      const fieldToDelete = fieldParts.slice(-1)[0];
+
+      let deletedData = undefined as unknown as T;
+
+      await store.update(parentField, (data) => {
+        const { [fieldToDelete]: dataToDelete, ...dataToKeep } = (data || {});
+        deletedData = dataToDelete;
+        return dataToKeep;
+      });
+
+      return deletedData;
+    },
     updateElement: async <T>(
       field: string,
       finder: (el: T) => Boolean,
