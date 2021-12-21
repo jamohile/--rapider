@@ -128,15 +128,6 @@ class RapiderStore {
     await this.set(field, await updater(existingData));
   }
 
-  async append(field: string, items: any[]) {
-    await this.update(field, (existingData) => {
-      if (Array.isArray(existingData)) {
-        return [...existingData, ...items];
-      } else {
-        return items;
-      }
-    });
-  }
   async delete<T>(field: string): Promise<T> {
     const fieldParts = field.split(".");
     const parentField = fieldParts.slice(0, -1).join(".");
@@ -154,6 +145,16 @@ class RapiderStore {
     });
 
     return deletedData;
+  }
+
+  async addElement(field: string, items: any[]) {
+    await this.update(field, (existingData) => {
+      if (Array.isArray(existingData)) {
+        return [...existingData, ...items];
+      } else {
+        return items;
+      }
+    });
   }
 
   async updateElement<T>(

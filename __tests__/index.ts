@@ -1603,7 +1603,7 @@ describe("Store", () => {
     const store = rapider.store.create("foo");
     await store.register();
     await store.set("parent.child", [0, 1, 2]);
-    await store.append("parent.child", [3]);
+    await store.addElement("parent.child", [3]);
     expect(await store.get("parent")).toEqual({
       child: [0, 1, 2, 3],
     });
@@ -1641,7 +1641,7 @@ describe("Store", () => {
   it("can add new array data to a store.", async () => {
     const store = rapider.store.create("foo");
     await store.register();
-    await store.append("parent.child", [0, 1, 2, 3]);
+    await store.addElement("parent.child", [0, 1, 2, 3]);
     expect(await store.get("parent")).toEqual({
       child: [0, 1, 2, 3],
     });
@@ -1651,7 +1651,7 @@ describe("Store", () => {
     const store = rapider.store.create("foo");
     await store.register();
     await store.set("parent.child", "overwrite");
-    await store.append("parent.child", [0, 1, 2, 3]);
+    await store.addElement("parent.child", [0, 1, 2, 3]);
     expect(await store.get("parent")).toEqual({
       child: [0, 1, 2, 3],
     });
