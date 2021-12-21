@@ -782,10 +782,10 @@ Here, items contains whatever object was saved, with an additional `key: string`
 
 ### Append to an array.
 
-`rapider.store.append`
+`rapider.store.addElement`
 
 ```ts
-await store.append("user.todos", ["get milk", "walk dog"]);
+await store.addElement("user.todos", ["get milk", "walk dog"]);
 ```
 
 ### Update a specific element (or, elements) in an array.
