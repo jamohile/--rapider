@@ -745,7 +745,15 @@ await store.set("user.usage.count", 0);
 store.update("user.usage.count", (count) => count + 1);
 ```
 
+### Delete an item.
+`rapider.store.delete`
+
+```ts
+const deletedData = await store.delete("path.to.item");
+```
+
 ### Add an items with a unique key.
+
 `rapider.store.add`
 
 By default, we add items with a linearly increasing key. That is: 1, 2, 3...If an object is deleted, the key will not be reused.
@@ -755,11 +763,13 @@ await store.add("path.to.container", data);
 ```
 
 We can also specify that a UUID based key be used instead.
+
 ```ts
-await store.add("path.to.container", data, {key: "uuid"});
+await store.add("path.to.container", data, { key: "uuid" });
 ```
 
 ### Get key-based items.
+
 `rapider.store.getKeyed`
 
 It's a common pattern to store items in a key-value format, by some ID. When we retrieve these objects, it's convenient to have them as a list instead, with the ID field inlined per object. Rapider provides a convenience method for this.
@@ -767,6 +777,7 @@ It's a common pattern to store items in a key-value format, by some ID. When we 
 ```ts
 const items = await store.getKeyed("path.to.container", data);
 ```
+
 Here, items contains whatever object was saved, with an additional `key: string` field added in.
 
 ### Append to an array.
@@ -794,12 +805,11 @@ async function completeTodo(id) {
 ```
 
 ### Delete a specific element (or, elements) in an array.
+
 `rapider.store.deleteElement`
 
 Delete all elements that match some finder-function.
+
 ```ts
-await store.deleteElement(
-  "user.todos",
-  item => item.id === 1
-);
+await store.deleteElement("user.todos", (item) => item.id === 1);
 ```
