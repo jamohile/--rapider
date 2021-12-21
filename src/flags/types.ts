@@ -12,7 +12,7 @@ export interface IFlagType<T> {
   name: string;
 }
 
-interface IFlagTypes {
+export interface IFlagTypes {
   string: () => IFlagType<string>;
   int: () => IFlagType<bigint>;
   float: () => IFlagType<number>;

@@ -13,7 +13,7 @@ export interface IFlagRule<K> {
 
 type ValFromFlags<T> = (flags: FlagVals) => T | Promise<T>;
 
-interface IFlagRules {
+export interface IFlagRules {
   oneOf: <T>(allowed: ValFromFlags<T[]>) => (flags: FlagVals) => IFlagRule<T>;
   allOneOf: <T>(
     allowed: ValFromFlags<T[]>
