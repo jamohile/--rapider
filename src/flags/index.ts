@@ -18,6 +18,7 @@ export interface IFlag<K> {
 
 export interface INamedFlag<K> extends IFlag<K> {
   aliases?: string[];
+  prompt?: boolean;
 }
 
 export interface IPositionalFlag<K> extends IFlag<K> {}

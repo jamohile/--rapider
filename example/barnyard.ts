@@ -10,9 +10,8 @@ import * as rapider from "../src";
 //     - house, where we need to know # rooms.
 
 async function main() {
-  const store = await rapider.store.register(
-    "barnyard-blueberry-grapefruit-chair"
-  );
+  const store = rapider.store.create("barnyard-blueberry-grapefruit-chair")
+  await store.register();
 
   const cli: rapider.ICli = {
     name: "Barnyard",
@@ -34,7 +33,7 @@ async function main() {
           ],
         },
         handler: async (args) => {
-          const animals = (await store.get("animals")) || [];
+          const animals = (await store.get("animals") as []) || [];
 
           rapider.ui.data
             .table({
@@ -51,7 +50,7 @@ async function main() {
         handler: async () => {
           const animals = await store.get("animals");
           const removedAnimals = await rapider.ui.input.list({
-            items: animals.map((a: { id: string; name: string }) => ({
+            items: (animals as []).map((a: { id: string; name: string }) => ({
               value: a.id,
               display: a.name,
             })),
@@ -59,7 +58,7 @@ async function main() {
           });
           await store.set(
             "animals",
-            animals.filter(
+            (animals as []).filter(
               (a: { id: string }) => !removedAnimals.includes(a.id)
             )
           );
@@ -78,11 +77,12 @@ async function main() {
               rules: [
                 rapider.flags.rules.required(),
                 rapider.flags.rules.notPartOf(async () => {
-                  return ((await store.get("animals")) || []).map(
+                  return ((await store.get("animals") as []) || []).map(
                     (a: { name: string }) => a.name
                   );
                 }),
               ],
+              prompt: true
             },
           ],
         },
@@ -92,10 +92,11 @@ async function main() {
           });
           const animals = await store.get("animals");
           const newAnimal = {
-            id: animals ? animals.slice(-1)[0].id + 1 : 0,
+            //@ts-ignore
+            id: animals ? (animals as []).slice(-1)[0].id + 1 : 0,
             name: flags.name,
           };
-          await store.append("animals", [newAnimal]);
+          await store.addElement("animals", [newAnimal]);
           spinner.dismiss();
           rapider.ui.logs.SUCCESS("Animal added.");
         },

@@ -84,7 +84,7 @@ export async function run(
     [
       [new NamedFlagsParser(), namedFlags],
       [new PositionalFlagsParser(), positionalFlags],
-      [new NamedFlagsParser(), namedFlags]
+      [new NamedFlagsParser(), namedFlags],
     ],
     parentFlags
   );
@@ -114,12 +114,32 @@ export async function run(
 
   // Otherwise, if we have a handler available, use that.
   if ("handler" in cli) {
+    // Prompt for any additional flags.
+    await promptForUnpassedFlags(namedFlags, realFlags);
+
     // Now, all the named flags (including those from parent) need to be evaluated.
     await validateRules([...namedFlags, ...positionalFlags], result.flags);
     return cli.handler!(realFlags);
   }
 
   return run(cli, ["--help"]);
+}
+
+async function promptForUnpassedFlags(
+  flags: INamedFlag<any>[],
+  values: Record<string, any>
+) {
+  for (const flag of flags) {
+    if (flag.prompt) {
+      if (values[flag.key] === undefined) {
+        values[flag.key] = await input.prompt({
+          label: `${flag.key} (${flag.type.name})`,
+          type: flag.type,
+        });
+        console.log(values);
+      }
+    }
+  }
 }
 
 async function validateRules(flags: IFlag<any>[], values: Record<string, any>) {
