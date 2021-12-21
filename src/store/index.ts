@@ -80,8 +80,23 @@ export async function register(name: string) {
         });
       }
     },
-    add: async <T>(container: string, data: T) => {
-      return store.set(`${container}.${uuidv4()}`, data);
+    add: async <T>(
+      container: string,
+      data: T,
+      options: { key: "linear" | "uuid" } = { key: "linear" }
+    ) => {
+      let key;
+      if (options.key === "uuid") {
+        key = uuidv4();
+      } else if (options.key === "linear") {
+        // A linearly increasing key.
+        // If items have been deleted, key still increases uniquely.
+        const lastKeyPath = `__rapider__.linear_keys.${container}.last_key`
+        const lastKey = await store.get(lastKeyPath, 0) as number;
+        key = lastKey + 1;
+        await store.set(lastKeyPath, key);
+      }
+      return store.set(`${container}.${key}`, data);
     },
     update: async (
       field: string,

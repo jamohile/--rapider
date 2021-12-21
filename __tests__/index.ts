@@ -1488,13 +1488,28 @@ describe("Store", () => {
     const insertedData = { a: 1, b: [2, 3] };
 
     const store = await rapider.store.register("foo");
-    await store.add("container", insertedData);
+    await store.add("container", insertedData, { key: "uuid" });
 
     const container = await store.get("container");
-    // @ts-ignore
-    expect(Object.values(container)).toHaveLength(1);
+
     // @ts-ignore
     expect(Object.values(container)).toEqual([insertedData]);
+  });
+
+  it("can add data with a linear key.", async () => {
+    const insertedData1 = { a: 1, b: [2, 3] };
+    const insertedData2 = { a: 2, b: [2, 3] };
+
+    const store = await rapider.store.register("foo");
+    await store.add("container", insertedData1);
+    await store.add("container", insertedData2);
+
+    const container = await store.get("container");
+
+    //@ts-ignore
+    expect(Object.values(container)).toEqual([insertedData1, insertedData2]);
+    //@ts-ignore
+    expect(Object.keys(container)).toEqual(["1", "2"]);
   });
 
   it("can read nested data from a store.", async () => {
