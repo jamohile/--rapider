@@ -1,0 +1,6 @@
+# Don't publish source.
+__tests__
+coverage
+example
+node_modules
+src
