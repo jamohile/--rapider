@@ -53,6 +53,16 @@ export async function register(name: string) {
       }
       return data;
     },
+    getKeyed: async <T>(
+      container: string
+    ): Promise<(T | { key: string })[]> => {
+      const itemsObj = (await store.get(container, {})) as Record<string, T>;
+      const items = Object.entries(itemsObj).map(([key, value]) => ({
+        ...value,
+        key,
+      }));
+      return items;
+    },
     set: async (field: string, data: any) => {
       const nestedFields = field.split(".");
       const thisField = nestedFields.slice(-1)[0];
@@ -91,8 +101,8 @@ export async function register(name: string) {
       } else if (options.key === "linear") {
         // A linearly increasing key.
         // If items have been deleted, key still increases uniquely.
-        const lastKeyPath = `__rapider__.linear_keys.${container}.last_key`
-        const lastKey = await store.get(lastKeyPath, 0) as number;
+        const lastKeyPath = `__rapider__.linear_keys.${container}.last_key`;
+        const lastKey = (await store.get(lastKeyPath, 0)) as number;
         key = lastKey + 1;
         await store.set(lastKeyPath, key);
       }

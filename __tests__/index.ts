@@ -1512,6 +1512,25 @@ describe("Store", () => {
     expect(Object.keys(container)).toEqual(["1", "2"]);
   });
 
+  it("can return object as keyed list.", async () => {
+    const insertedData1 = { a: 1, b: [2, 3] };
+    const insertedData2 = { a: 2, b: [2, 3] };
+
+    const store = await rapider.store.register("foo");
+    await store.add("container", insertedData1);
+    await store.add("container", insertedData2);
+
+    const items = await store.getKeyed("container");
+
+    expect(items).toEqual([
+      {
+        key: "1",
+        ...insertedData1,
+      },
+      { key: "2", ...insertedData2 },
+    ]);
+  });
+
   it("can read nested data from a store.", async () => {
     const store = await rapider.store.register("foo");
     await store.set("parent", {
