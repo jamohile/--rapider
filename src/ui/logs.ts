@@ -172,6 +172,16 @@ export const spinner = (args: ISpinner = {}) => {
   return spinnerObject;
 };
 
+export const withSpinner = async <T>(
+  handler: () => Promise<T>,
+  args: ISpinner = {}
+) => {
+  const loader = spinner(args);
+  const promise = handler();
+  spinner(args).wrap(promise);
+  return await promise;
+};
+
 // Progress Bar Test:
 //
 // const bar = progressBar({});
