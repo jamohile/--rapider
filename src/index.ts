@@ -148,9 +148,17 @@ async function validateRules(flags: IFlag<any>[], values: Record<string, any>) {
     for (const rule of rules) {
       const executedRule = rule(values);
       if ((await executedRule.check(values[flag.key])) === false) {
-        logs.ERROR(
-          `flag "${flag.key}" is invalid: ${await executedRule.message()}`
-        );
+        // We can use a fatal log during testing.
+        // But, it's preferable in use.
+        if (process.env.NODE_ENV === "test") {
+          logs.ERROR(
+            `flag "${flag.key}" is invalid: ${await executedRule.message()}`
+          );
+        } else {
+          logs.FATAL(
+            `flag "${flag.key}" is invalid: ${await executedRule.message()}`
+          );
+        }
       }
     }
   }

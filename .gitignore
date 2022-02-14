@@ -8,3 +8,5 @@ dist
 
 # Jest.config.js is the only js file we track.
 !jest.config.js
+
+.DS_Store
