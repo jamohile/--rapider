@@ -176,7 +176,6 @@ export const withSpinner = async <T>(
   handler: () => Promise<T>,
   args: ISpinner = {}
 ) => {
-  const loader = spinner(args);
   const promise = handler();
   spinner(args).wrap(promise);
   return await promise;
