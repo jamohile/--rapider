@@ -953,8 +953,128 @@ describe("Flag Rules", () => {
       });
     });
   });
+  describe("Allowed", () => {
+    it("Does not allow flag if allowed is false.", async () => {
+      const spy = jest.fn();
+      await expect(
+        rapider.run(
+          {
+            scopes: {
+              command: {
+                flags: {
+                  named: [
+                    {
+                      key: "foo",
+                      type: rapider.flags.types.string(),
+                      rules: [rapider.flags.rules.allowed(() => false)],
+                    },
+                  ],
+                },
+                handler: spy,
+              },
+            },
+          },
+          ["command", "--foo", "apple"]
+        )
+      ).rejects.toMatchObject({ message: expect.stringContaining("foo") });
+    });
+    it("allows flag if allowed is true.", async () => {
+      const spy = jest.fn();
+      await rapider.run(
+        {
+          scopes: {
+            command: {
+              flags: {
+                named: [
+                  {
+                    key: "foo",
+                    type: rapider.flags.types.string(),
+                    rules: [rapider.flags.rules.required(() => true)],
+                  },
+                ],
+              },
+              handler: spy,
+            },
+          },
+        },
+        ["command", "--foo", "true"]
+      );
+    });
+  });
+  describe("Required", () => {
+    it("enforces required if not specified", async () => {
+      const spy = jest.fn();
+      await expect(
+        rapider.run(
+          {
+            scopes: {
+              command: {
+                flags: {
+                  named: [
+                    {
+                      key: "foo",
+                      type: rapider.flags.types.string(),
+                      rules: [rapider.flags.rules.required()],
+                    },
+                  ],
+                },
+                handler: spy,
+              },
+            },
+          },
+          ["command"]
+        )
+      ).rejects.toMatchObject({ message: expect.stringContaining("foo") });
+    });
+    it("does not enforce required if false", async () => {
+      const spy = jest.fn();
+      await rapider.run(
+        {
+          scopes: {
+            command: {
+              flags: {
+                named: [
+                  {
+                    key: "foo",
+                    type: rapider.flags.types.path(),
+                    rules: [rapider.flags.rules.required(() => false)],
+                  },
+                ],
+              },
+              handler: spy,
+            },
+          },
+        },
+        ["command"]
+      );
+    });
+    it("enforces required if 'true'", async () => {
+      const spy = jest.fn();
+      await expect(
+        rapider.run(
+          {
+            scopes: {
+              command: {
+                flags: {
+                  named: [
+                    {
+                      key: "foo",
+                      type: rapider.flags.types.path(),
+                      rules: [rapider.flags.rules.required()],
+                    },
+                  ],
+                },
+                handler: spy,
+              },
+            },
+          },
+          ["command"]
+        )
+      ).rejects.toMatchObject({ message: expect.stringContaining("foo") });
+    });
+  });
   describe("Custom", () => {
-    it("can check if file exists.", async () => {
+    it("calls custom rule checker.", async () => {
       const spy = jest.fn();
       const ruleSpy = jest.fn().mockImplementation((data) => true);
 

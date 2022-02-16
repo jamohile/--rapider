@@ -30,7 +30,13 @@ export interface IFlagRules {
   length: <K>(
     length: ValFromFlags<number>
   ) => (flags: FlagVals) => IFlagRule<K>;
-  required: <K>() => (flags: FlagVals) => IFlagRule<K>;
+  required: (
+    value?: ValFromFlags<boolean>
+  ) => (flags: FlagVals) => IFlagRule<boolean>;
+
+  allowed: (
+    value: ValFromFlags<boolean>
+  ) => (flags: FlagVals) => IFlagRule<boolean>;
 
   greaterThan: <K>(value: ValFromFlags<K>) => (flags: FlagVals) => IFlagRule<K>;
   lessThan: <K>(value: ValFromFlags<K>) => (flags: FlagVals) => IFlagRule<K>;
@@ -96,9 +102,17 @@ export const FlagRules: IFlagRules = {
       data === undefined || data.length === (await length(flags)),
     message: async () => `Must have length ${await length(flags)}.`,
   }),
-  required: () => () => ({
-    check: async (data: any) => data !== undefined,
-    message: async () => "Must be supplied.",
+  required:
+    (val = () => true) =>
+    (flags) => ({
+      check: async (data: any) =>
+        data !== undefined || (await val(flags)) === false,
+      message: async () => "Must be supplied.",
+    }),
+  allowed: (val) => (flags) => ({
+    check: async (data: any) =>
+      (await val(flags)) === true || data === undefined,
+    message: async () => "Is not allowed.",
   }),
   greaterThan: (val) => (flags) => ({
     check: async (data) => data === undefined || data > (await val(flags)),
@@ -131,7 +145,7 @@ export const FlagRules: IFlagRules = {
 
   custom: (handler) => (flags) => ({
     check: async (data) => {
-      return (data === undefined) || await handler(data, flags);
+      return data === undefined || (await handler(data, flags));
     },
     message: async () => "Custom Flag Rule",
   }),
